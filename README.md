@@ -35,3 +35,24 @@ Docker Compose:
 #### Part 4: Coffee Break ####
 
 Network Chuck would be proud.
+
+
+### TODO ### 
+
+1. Put haproxy and postgres on their own networks. 
+
+2. Visualizer 
+
+```
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "7001:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - back-end
+```

@@ -1,0 +1,266 @@
+﻿.focal-point-hero-wrap{
+  position: relative;
+}
+/*modern browsers*/
+picture.fixed-aspect{
+  display:block;
+  position:relative;
+}
+picture.fixed-aspect img {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top:0;bottom:0;right:0;left:0;
+    object-fit: cover;
+    object-position: 50% 50%; /*overidden inline if provided*/
+}
+picture.fixed-aspect img.poster{
+  z-index:1;
+}
+picture.fixed-aspect .video-background{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top:0;bottom:0;right:0;left:0;
+    overflow: hidden;
+    background:#000;
+}
+picture.fixed-aspect .video-background iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    max-width: none;
+}
+picture.fixed-aspect .video-background video{
+  position: absolute;
+  top: 50%; 
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  min-width: 100%; 
+  min-height: 100%; 
+  max-width: none;
+  width: auto; 
+  height: auto;
+}
+
+/*fallback for picture.fixed-aspect. See required object-fit-polyfill.js*/
+.bg-image-fallback{
+  background-size: cover;
+}
+.focal-point-hero-wrap a:hover{
+    text-decoration:none;
+}
+.focal-point-hero-wrap figure {
+  position: relative;
+  overflow: hidden;
+}
+.focal-point-hero-wrap figure figcaption {
+  color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10%;
+  overflow: hidden;
+  display: -webkit-box;
+  display: flex;
+  z-index:5;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+}
+.focal-point-hero-wrap figure figcaption .figcaption-inner{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+@media (min-width: 992px) {
+    .focal-point-hero-wrap figure figcaption .figcaption-inner{
+        max-width: 1200px;
+    }
+}
+
+/**this is especially for your favorite browser and mine**/
+.focal-point-hero-wrap figure figcaption h1,
+.focal-point-hero-wrap figure figcaption h2,
+.focal-point-hero-wrap figure figcaption p {
+    max-width: 100%;
+}
+.focal-point-hero-wrap figure figcaption p {
+  overflow: hidden;
+  padding-bottom: 5px;
+}
+.focal-point-hero-wrap figure figcaption * {
+  position: relative;
+}
+.focal-point-hero-wrap figure figcaption:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, rgba(28, 28, 28, 0.25)), to(rgba(28, 28, 28, 0.8)));
+  background: linear-gradient(to bottom, rgba(28, 28, 28, 0.25) 5%, rgba(28, 28, 28, 0.8));
+}
+.focal-point-hero-wrap figure.hero figcaption.empty-caption:before{
+  background: none;
+}
+.focal-point-hero-wrap figure figcaption h1{
+    font-weight: 500;
+    margin-bottom: .3rem!important;
+}
+.focal-point-hero-wrap figure figcaption h2.description{
+    margin-bottom:.3rem!important;
+}
+.focal-point-hero-wrap figure figcaption p.byline{
+    margin-top:.7rem;
+}
+
+/*flex slider stuff*/
+.flex-control-nav{
+  position: absolute;
+  bottom: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.flex-control-nav li{
+  margin: 0 5px;
+}
+.flex-control-nav a{
+  text-indent:-999rem;
+  display:inline-block;
+  border-radius: 50%;
+  background: rgba(255,255,255,.5);
+  opacity: .6;
+  height: .6rem;
+  width: .6rem;
+  cursor: pointer;
+}
+.flex-control-nav a.flex-active{
+  opacity:1;
+}
+.focal-point-hero-wrap .fa-play.slide-icon {
+  margin-bottom:10px;
+}
+.focal-point-hero-wrap .flex-prev,
+.focal-point-hero-wrap .flex-next {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 20%;
+    height: 40px;
+    margin-top: -20px;
+    opacity: .7;
+    text-indent: -999rem;
+    transition: opacity .2s;
+}
+@media (min-width: 992px) {
+    .focal-point-hero-wrap .flex-prev,
+    .focal-point-hero-wrap .flex-next {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        height: auto;
+        margin:0;
+    }
+}
+.focal-point-hero-wrap .flex-next{
+  right: 0;
+  left: auto;
+}
+.focal-point-hero-wrap .flex-prev::before,
+.focal-point-hero-wrap .flex-next::before {
+  content: "\f053";
+  display: block;
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  left: 35%;
+  top: 50%;
+  margin-top: -1rem;
+  margin-left: -1rem;
+  /* stylelint-disable font-family-no-missing-generic-family-keyword */  
+  font: 700 2rem/1 "Font Awesome 5 Free";
+  /* stylelint-enable font-family-no-missing-generic-family-keyword */
+  text-align:center;
+  text-indent:0;
+  color:#fff;
+  transition: left .2s, right .2s;
+}
+.focal-point-hero-wrap .flex-next::before {
+  content: "\f054";
+  left: auto;
+  right:35%;
+  margin-left: auto;
+  margin-right: -1rem;
+}
+.focal-point-hero-wrap .flex-prev:hover::before{
+  left: 30%;
+}
+.focal-point-hero-wrap .flex-next:hover::before {
+  right: 30%;
+}
+@media(min-width: 992px){
+  .focal-point-hero-wrap .flex-prev,
+  .focal-point-hero-wrap .flex-next{
+    opacity: 0;
+  }
+  .focal-point-hero-wrap:hover .flex-prev,
+  .focal-point-hero-wrap:hover .flex-next{
+    opacity:.35;
+  }
+  .focal-point-hero-wrap .flex-prev:hover,
+  .focal-point-hero-wrap .flex-next:hover{
+    opacity:1;
+  }
+  
+}
+.focal-point-hero-wrap .flex-disabled{
+  display:none;
+}
+/*end flex slider stuff*/
+picture.fixed-aspect.portrait .slide-bg-blur{
+  position: absolute;
+  top:-20rem;right:-20rem;left:-20rem;bottom:-20rem;
+  -webkit-filter: blur(20px);
+  filter: blur(20px);
+  background-size: cover;
+  background-position: 50%;
+  z-index: 1;
+}
+picture.fixed-aspect.portrait .bg-image-fallback, 
+picture.fixed-aspect.portrait img{
+  height: 100%;
+  width: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+.focal-point-hero-wrap .slidecount {/*beware of multiple versions of focal-point-hero-wrap on a page*/
+    position: absolute;
+    color:#fff;
+    font-size: 1rem;
+    left: 50%;
+    bottom: 5%;
+    transform: translateX(-50%);
+    z-index:1;
+    font-family: Oswald, sans-serif;
+}

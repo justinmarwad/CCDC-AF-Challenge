@@ -1,0 +1,340 @@
+.af3AccordionMenu, .af3AccordionMenuSubMenu, .af3AccordionMenuListItem { 
+    margin: 0px; 
+    padding: 0px; 
+    position: relative; 
+}
+
+.af3AccordionMenu, 
+.af3AccordionMenuSubMenu, 
+.af3AccordionMenu .af3AccordionMenuListItem { 
+    list-style: none; 
+}
+
+.af3AccordionMenu li .af3AccordionMenuSubMenu {
+    outline: none;
+    border: 2px solid #1c2347;
+    border-top: none;
+}
+
+.af3AccordionMenu li:focus > .listItem > .af3MenuLinkHeader > span {
+    text-decoration: none;
+    font-weight: bold;
+    outline: none;
+}
+
+.af3AccordionMenu .af3AccordionMenuSubMenu li:focus {
+    outline: none;
+}
+
+.af3AccordionMenu .af3AccordionMenuSubMenu li[tabindex="0"].af3AccordionMenuListItem {
+    cursor: pointer;
+}
+
+.af3AccordionMenu li:focus {
+    outline: none;
+}
+
+.af3AccordionMenu li:focus .af3AccordionRootNode {
+    outline: none;
+    background: rgba(28, 35, 71, .8);
+    text-decoration: none;
+}
+
+.af3AccordionMenuSubMenu {
+    font-family: inherit;
+    background: #fff;
+}
+
+.af3AccordionMenuSubMenu li .af3AccordionMenuSubMenu {
+    padding-top: 0;
+    border: none;
+}
+
+.af3AccordionMenu > .af3AccordionMenuListItem > .af3AccordionMenuSubMenu { 
+    padding: 0;
+}
+
+.af3AccordionMenuLastListItem .af3MenuLinkHeader {
+    padding-bottom: 0;
+}
+
+.af3AccordionMenuListItem {
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.listItem {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.listItem.lvl1 {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.AccordionContainer > .af3AccordionMenu > .af3AccordionMenuListItem {
+    padding-top: 0;
+    padding-bottom: 5px;
+}
+
+.af3AccordionMenuLastListItem { 
+    margin-bottom: 0;
+    border-bottom: none; 
+}
+
+.af3AccordionMenuListItem div.listItem { 
+    line-height: 16px; 
+    padding: 10px 5px; 
+}
+
+.af3AccordionMenuListItem div.lvl0 a,
+.af3AccordionMenuListItem div.af3MenuLinkHeader a { 
+    text-transform: uppercase; 
+    text-decoration: none; 
+}
+
+.af3AccordionMenuListItem div.lvl0,
+.af3AccordionMenuListItem div.af3MenuLinkHeader { 
+    text-transform: uppercase; 
+    text-decoration: none; 
+    display: flex;
+    justify-content: space-between;
+}
+
+.af3AccordionMenuSubMenu div a { 
+    color: #123D64; 
+    font-family: inherit; 
+}
+
+.af3AccordionMenu div.lvl0 a:hover,
+.af3AccordionMenu .af3MenuLinkHeader a:hover { 
+    text-decoration: underline !important; 
+}
+
+li[tabindex="0"].af3-expand > .af3AccordionRootNode:after,
+li[tabindex="0"].af3-expand > .listItem > .af3MenuLinkHeader:after {
+    /* stylelint-disable font-family-no-missing-generic-family-keyword */
+    font-family: 'Font Awesome 5 Free';
+    /* stylelint-enable */
+    font-weight: 900;
+    content: '\f068';
+    font-size: 0.7rem;
+    padding-left: 0;
+}
+
+li[tabindex="0"].af3-expand > .af3AccordionRootNode:after {
+    transform: rotate(180deg);
+}
+
+li[tabindex="0"].af3-expand > .listItem > .af3MenuLinkHeader:after {
+    padding-left: 0;
+}
+
+li[tabindex="0"] > .af3AccordionRootNode:after,
+li[tabindex="0"] > .listItem > .af3MenuLinkHeader:after {
+    /* stylelint-disable font-family-no-missing-generic-family-keyword */
+    font-family: 'Font Awesome 5 Free';
+    /* stylelint-enable */
+    content: '\f067';
+    font-weight: 900;
+    font-size: 0.7rem;
+    padding-left: 0;
+}
+
+li[tabindex="0"] > .af3AccordionRootNode:after {
+    transform: rotate(0deg);
+    transition: 0.25s;
+}
+
+li[tabindex="0"] > .listItem > .af3MenuLinkHeader:after {
+    padding-left: 0;
+}
+
+.af3AccordionMenu div.paddedHeader,
+.af3AccordionMenu div.hasHtmlSection {
+    padding-right: 13px;
+}
+
+.af3AccordionMenu div.af3AccordionRootNode {
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: 0.7rem;
+    font-weight: normal;
+    letter-spacing: 1px;
+    cursor: pointer;
+    outline: none;
+    background: #1c2347;
+    padding: 8px 15px 8px 15px;
+    min-height: 35.63px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.25s linear;
+}
+
+.af3AccordionMenu div.af3AccordionRootNode a {
+    color: #FFFFFF;
+}
+
+.af3AccordionMenu div.af3AccordionRootNode > div[class^="lvl"] {
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+    line-height: 1rem;
+    max-height: calc(3 * 1rem);
+    padding-right: 1rem;
+}
+
+@supports (-webkit-line-clamp: 1) {
+    .af3AccordionMenu div.af3AccordionRootNode > div[class^="lvl"] {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+    }
+
+    .af3AccordionMenu div.af3AccordionRootNode > div[class^="lvl"]:after {
+        display: none;
+    }
+
+    .af3AccordionMenu div.af3AccordionRootNode > div[class^="lvl"] > span:before {
+        display: none;
+    }
+}
+
+/*
+    List Item Section
+    (HTML Sections are treated like the next level)
+*/
+
+/* Level One List Items */
+.af3AccordionMenu div.lvl1 {
+    padding-left: 15px;
+    background: rgba(0, 0, 0, 0.10);
+}
+
+/* If none of the items have children they get a lighter background */
+.af3AccordionMenu .no-grand-children ~ .af3AccordionMenuSubMenu > .af3AccordionMenuListItem > div.lvl1 {
+    background: rgba(0, 0, 0, 0.025);
+}
+
+/* Level Two List Items */
+.af3AccordionMenu div.lvl1 + .htmlSection {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.af3AccordionMenu div.lvl2 {
+    padding-left: 30px;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Level Three List Item */
+.af3AccordionMenu div.lvl2 + .htmlSection {
+    background: rgba(0, 0, 0, 0.025);
+}
+
+.af3AccordionMenu div.lvl3 {
+    padding-left: 45px;
+    background: rgba(0, 0, 0, 0.025);
+}
+
+/* Level Four List Item */
+.af3AccordionMenu div.lvl3 + .htmlSection {
+    background: #fff;
+}
+
+.af3AccordionMenu div.lvl4 {
+    padding-left: 60px;
+    background: #fff;
+}
+
+/* Level Five List Item */
+.af3AccordionMenu div.lvl4 + .htmlSection {
+    background: #fff;
+}
+
+.af3AccordionMenu div.lvl5 {
+    padding-left: 75px;
+    background: #fff;
+}
+
+/*
+    End List Item Section
+*/
+
+.af3MenuLinkHeader {
+    color: #666;
+    font-size: 0.6rem;
+    font-weight: normal;
+    font-family: inherit;
+    margin: 0;
+}
+
+.af3MenuLinkDetail {
+    color: #666666;
+    font-size: 10px;
+    font-weight: normal;
+    font-family: inherit;
+    text-transform: none;
+}
+
+.htmlSection.add-pad {
+    padding: 15px;
+}
+
+.htmlSection p {
+    margin-bottom: 0px;
+}
+
+.af3AccordionRootNode + div.htmlSection {
+    background: rgba(0, 0, 0, 0.025);
+}
+
+.htmlSection:not(.lvl1) {
+    max-height: 100vh;
+    overflow: auto;
+    outline: none;
+    border: 2px solid #1c2347;
+    border-top: none;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.af3AccordionMenuCollapsed {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    right: 8px;
+    top: 14px;
+    cursor: pointer;
+    background: #fff;
+    display: none;
+}
+
+.af3AccordionMenuExpanded {
+    border-color: transparent transparent rgba(255,255,255,.7);
+    top: 8px;
+}
+
+.tellmemore {
+    font-weight: 700;
+    display: block;
+    text-align: right;
+    padding: 5px 15px;
+    background: #fff;
+}
+
+.hidetellmemore {
+    display: none;
+}
+
+.af3AccordionMenu h5 {
+    font-size: 0.85rem;
+}
+
+.af3AccordionMenu h6 {
+    font-size: 0.65rem;
+}
+
+.af3AccordionMenu {
+    font-size: 0.55rem;
+}

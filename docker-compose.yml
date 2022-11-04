@@ -23,8 +23,8 @@ services:
       - "80:80"
     depends_on:
       - web
-    network: 
-      driver: host 
+    # network: 
+    #   driver: host 
       # mynet:
       #   ipv4_address: 172.25.0.101
     deploy:
@@ -34,7 +34,8 @@ services:
 
     
   web:
-    image: cruml/af-challenge-jumpbox:django
+    # image: cruml/af-challenge-jumpbox:django
+    build: ./Django_Site
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"

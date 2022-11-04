@@ -1,0 +1,120 @@
+﻿.focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide{
+  float: left; /* prevents whitespace inside slide causing a bit of unwanted height*/  
+}
+.focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figure{
+  margin: 0;
+  width: 85vw;
+}
+@media (min-width: 768px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figure{
+    margin: 0 .375rem;  
+  }
+}
+.focal-point-wrap.focal-point-filmstrip .slick-slide:first-child .focal-point-filmstrip-slide figure{
+  margin-left:0;
+}
+.focal-point-wrap.focal-point-filmstrip .slick-slide:last-child .focal-point-filmstrip-slide figure{
+  margin-right:0;
+}
+@media (min-width: 768px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figure{
+    width: 45vw;
+  }
+}
+@media (min-width: 992px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figure{
+    width: 30vw;
+  }
+}
+.focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide picture {
+  height: 35vh;
+  max-height: 35vh;
+}
+
+@media (min-width: 768px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide picture {
+    padding-bottom:350px;
+    max-height: none;
+    height: auto;
+  }
+}
+
+@media (min-width: 992px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide picture {
+    padding-bottom: 80%;
+  }
+}
+@media (min-width: 1400px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide picture {
+    padding-bottom: 66.66%;
+  }
+}
+.focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figure a{
+  display:block;
+}
+
+@media (min-width: 768px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figcaption {
+    padding-bottom:2rem;
+  }
+}
+
+.focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figcaption h1 {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: .4rem;
+}
+
+@media (min-width: 768px) {
+  .focal-point-wrap.focal-point-filmstrip .focal-point-filmstrip-slide figcaption h1 {
+    font-size:1.2rem;
+  }
+}
+
+
+/*slick slider styles*/
+.focal-point-filmstrip .slick-arrow{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: none!important;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  z-index: 1;
+  cursor:pointer;
+}
+
+@media (min-width: 992px) {
+  .focal-point-filmstrip .slick-arrow{
+    display:flex!important;
+  }
+  .focal-point-filmstrip .slick-arrow.slick-disabled{
+    display:none !important;
+  }
+}
+.focal-point-filmstrip .slick-arrow.nav-next{
+  left: auto;
+  right:0;
+}
+.focal-point-filmstrip .slick-arrow .fas{
+  color:#fff;
+  transition: all .2s;
+  opacity: 0;
+  margin:0;
+  font-size: 1.5rem
+}
+.focal-point-filmstrip:hover .slick-arrow .fas{
+  opacity:.35;
+}
+.focal-point-filmstrip .slick-arrow:hover .fas{
+  opacity:1;
+}
+.focal-point-filmstrip .slick-arrow:hover .fa-chevron-left{
+  margin-left:-20px;
+}
+.focal-point-filmstrip .slick-arrow:hover .fa-chevron-right{
+  margin-right:-20px;
+}
+
