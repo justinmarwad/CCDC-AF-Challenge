@@ -11,6 +11,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     networks:
       - db_net
+    restart: on-failure
 
   web:
     # build: ./Django_Site
@@ -26,6 +27,7 @@ services:
     networks:
       - db_net
       - wb_net
+    restart: on-failure
 
   haproxy:
     image: haproxy:latest

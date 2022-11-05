@@ -54,6 +54,7 @@ This Tag specifies the start of the file where we will define the services that 
       - POSTGRES_PASSWORD=postgres
     networks:
       - db_net
+    restart: on-failure 
 ```
 This defines a service with the **name** db, this will provide a **DNS alias** that the **docker DNS** service can use to address the container(s)
 
@@ -79,7 +80,7 @@ The following describes the internal tags of the service db.
 
 ***networks:*** defines the docker networks that the container will be attacked to, if this is not provided it will be assumed that the container will be on the default network. This follows the same format as the volumes tag! **In this case** we are attaching this container to one network called db_net
 
-
+***restart: \<condition\>*** tells docker to restart the service when a certian condtion happens, so in this case it will restart on failures
 
 ```dockerfile
   web:
@@ -95,6 +96,7 @@ The following describes the internal tags of the service db.
       - wb_net    
     depends_on:
       - db
+    restart: on-failure 
 ```
 This defines a service with the **name** web, this will provide a **DNS alias** that the **docker DNS** service can use to address the container(s)
 
@@ -105,6 +107,8 @@ This defines a service with the **name** web, this will provide a **DNS alias** 
 ***networks:*** This format is the same as described before. **In this case** the web service will be connected to the bd_net and wb_net networks.
 
 ***depends_on:*** Tells docker compose that this service cannot be created unless the following services are already created and running. **In this case** the web service depends on the db (databse) service, this is because it needs to connect to the database and if it is unable to do so errors will occur. The depends_on tag has a format similar to the volumes Tag.
+
+***restart: \<condition\>*** tells docker to restart the service when a certian condtion happens, so in this case it will restart on failures
 ```dockerfile
 # Not a part of the final code! 
 <tab> - <service>
@@ -142,6 +146,7 @@ This is a service defining the proxy container that will be used to implement fu
 
 ***depends_on:*** this format is the same as described before. **In this case** the haproxy service depends on the web service, so it will not start till the web service container(s) have started. Since the web service depends on the db (database) service then it will not start till both the db, and web services have started.
 
+***restart: \<condition\>*** tells docker to restart the service when a certian condtion happens, so in this case it will restart on failures
 ```dockerfile
 volumes: 
   db: 
