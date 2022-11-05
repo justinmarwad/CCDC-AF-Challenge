@@ -40,9 +40,8 @@ services:
 
     
   web:
-    # image: cruml/af-challenge-jumpbox:django
-    build: ./Django_Site
-    command: python manage.py runserver 0.0.0.0:8000
+    image: sh0rtcyb3r/ccdc23-af-django:latest
+    # build: ./Django_Site
     ports:
       - "8000:8000"
     environment:
