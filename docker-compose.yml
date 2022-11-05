@@ -15,8 +15,8 @@ services:
   web:
     # build: ./Django_Site
     image: sh0rtcyb3r/ccdc23_af_django:latest
-    ports:
-      - "8000:8000"
+    #ports: # This is not needed as it does not need to be exposed, we currently have it as part of the internal network. 
+      #- "8000:8000"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -25,6 +25,7 @@ services:
       - db
     networks:
       - db_net
+      - wb_net
 
   haproxy:
     image: haproxy:latest
@@ -36,14 +37,32 @@ services:
       - web
     networks: 
       - db_net
+      - wb_net
+      - out_net
     restart: on-failure
     # network_mode: host
-
 
 volumes: 
   db: 
 
+# If this is not a swarm part the networks need to be bridged. 
 networks: 
+  # We want to create a network for the Web browsers to communicate with the database
   db_net: 
-    driver: overlay 
+    driver: bridge 
     attachable: true
+    # Added to make the network have no gateway configured (No internet access)
+    internal: true
+  # We want to create a network for the proxy to communicate with the web servers, but not the database 
+  wb_net:
+    driver: bridge 
+    attachable: true
+    # Added to make the network have no gateway configured (No internet access)
+    internal: true
+  # Since the proxy is using the host for portmapping does it need network access?
+  out_net:
+    driver: bridge  
+    attachable: true
+
+
+    

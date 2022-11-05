@@ -4,18 +4,18 @@ services:
   db:
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    # network:
-    #   - db_net
+    networks:
+      - db_net
 
     deploy:
       placement:
         constraints:
-          - "node.role==manager"
+          - "node.role==manager" # do we need to label? or is this done automatically?
       restart_policy:
         condition: on-failure
 
@@ -25,12 +25,11 @@ services:
       - ./data/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro 
     ports:
       - "80:80"
+    networks: 
+      - out_net
+      - wb_net
     depends_on:
       - web
-    # network: 
-    #   driver: host 
-      # mynet:
-      #   ipv4_address: 172.25.0.101
     deploy:
       placement:
         constraints:
@@ -42,17 +41,18 @@ services:
   web:
     image: sh0rtcyb3r/ccdc23_af_django:latest
     # build: ./Django_Site
-    ports:
-      - "8000:8000"
+    #ports:            # internal routing no need to map
+     # - "8000:8000"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    networks:
+      - db_net
+      - out_net 
     depends_on:
       - db
-    # network:
-    #   - db_net
-    #   - haproxy_net 
+
 
     deploy:
       replicas: 3
@@ -61,9 +61,24 @@ services:
       restart_policy:
         condition: on-failure
 
-# networks: 
-#   haproxy_net:
-#     driver: host
+volumes:
+  db:
 
-#   db_net: 
-#     driver: overlay 
+# If this is not a swarm part the networks need to be bridged. 
+networks: 
+  # We want to create a network for the Web browsers to communicate with the database
+  db_net: 
+    driver: overlay 
+    attachable: true
+    # Added to make the network have no gateway configured (No internet access)
+    internal: true
+  # We want to create a network for the proxy to communicate with the web servers, but not the database 
+  wb_net:
+    driver: overlay 
+    attachable: true
+    # Added to make the network have no gateway configured (No internet access)
+    internal: true
+  # Since the proxy is using the host for portmapping does it need network access?
+  out_net:
+    driver: overlay  
+    attachable: true
