@@ -4,13 +4,20 @@ services:
   db:
     image: postgres
     volumes:
-      - db:/var/lib/postgresql/data
+      - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     # network:
     #   - db_net
+
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+      restart_policy:
+        condition: on-failure
 
   haproxy:
     image: haproxy:latest
@@ -22,7 +29,16 @@ services:
       - web
     # network: 
     #   driver: host 
+      # mynet:
+      #   ipv4_address: 172.25.0.101
+    deploy:
+      placement:
+        constraints:
+          - "node.role==manager"
+      restart_policy:
+        condition: on-failure
 
+    
   web:
     # image: cruml/af-challenge-jumpbox:django
     build: ./Django_Site
@@ -39,8 +55,12 @@ services:
     #   - db_net
     #   - haproxy_net 
 
-volumes: 
-  db: 
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+      restart_policy:
+        condition: on-failure
 
 # networks: 
 #   haproxy_net:
