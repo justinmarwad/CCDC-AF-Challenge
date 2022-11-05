@@ -9,8 +9,22 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    # network:
-    #   - db_net
+    networks:
+      - db_net
+
+  web:
+    # build: ./Django_Site
+    image: sh0rtcyb3r/ccdc23_af_django:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+    networks:
+      - db_net
 
   haproxy:
     image: haproxy:latest
@@ -20,31 +34,16 @@ services:
       - "80:80"
     depends_on:
       - web
-    # network: 
-    #   driver: host 
+    networks: 
+      - db_net
+    restart: on-failure
+    # network_mode: host
 
-  web:
-    # image: cruml/af-challenge-jumpbox:django
-    build: ./Django_Site
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "8000:8000"
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    depends_on:
-      - db
-    # network:
-    #   - db_net
-    #   - haproxy_net 
 
 volumes: 
   db: 
 
-# networks: 
-#   haproxy_net:
-#     driver: host
-
-#   db_net: 
-#     driver: overlay 
+networks: 
+  db_net: 
+    driver: overlay 
+    attachable: true

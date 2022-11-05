@@ -40,7 +40,7 @@ services:
 
     
   web:
-    image: sh0rtcyb3r/ccdc23-af-django:latest
+    image: sh0rtcyb3r/ccdc23_af_django:latest
     # build: ./Django_Site
     ports:
       - "8000:8000"
