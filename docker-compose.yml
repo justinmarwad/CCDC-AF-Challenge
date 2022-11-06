@@ -34,8 +34,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    # depends_on:
-    #   - web
+    depends_on:
+      - web
     networks: 
       - db_net
       - wb_net
