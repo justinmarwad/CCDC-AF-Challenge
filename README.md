@@ -85,8 +85,6 @@ The following describes the internal tags of the service db.
 ```dockerfile
   web:
     image: sh0rtcyb3r/ccdc23_af_django:latest
-    #ports: # This is not needed as it does not need to be exposed, we currently have it as part of the internal network. 
-      #- "8000:8000"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -211,8 +209,6 @@ services:
 
   web:
     image: sh0rtcyb3r/ccdc23_af_django:latest
-    #ports: # This is not needed as it does not need to be exposed, we currently have it as part of the internal network. 
-      #- "8000:8000"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -411,7 +407,7 @@ frontend fe_http
 ```
 backend be_http
     mode http
-    server srv1 web:8000 
+    server srv1 web:8000 check
 ```
 ***There are no changes to the backend***
 
@@ -458,8 +454,7 @@ Network Chuck would be proud.
   * [networks](https://docs.docker.com/compose/compose-file/compose-file-v2/#network-configuration-reference)
     *[drivers](https://docs.docker.com/network/#network-drivers)
 
-* DNS
-  * https://vegibit.com/dns-round-robin-in-docker/ (It will work :))
+* [DNS](https://vegibit.com/dns-round-robin-in-docker/)
 
 * HAProxy 
   * https://www.haproxy.com/documentation/hapee/latest/configuration/binds/syntax/
