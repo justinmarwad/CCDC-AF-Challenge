@@ -17,11 +17,18 @@ Here's the gist.
 
 ### Usage ###
 
-To run the site: 
-```docker compose up -d``` 
+#### Build/Run Locally ####
 
-To stop the site: 
-```docker compose down```
+1. Build Docker container: ```docker build -t django_af_site .```
+2. Run Docker container: ```docker run django_af_site``` (postgres should be running with dns of "db")
+   
+
+#### Upload to Registry ####
+
+1. Build Docker container: ```docker build -t django_af_site .```
+2. Create tag: ```docker tag django_af_site:latest <registry>/django_af_site:latest```
+3. Upload to Docker Hub: ```docker push <registry>/django_af_site:latest```
+
 
 ### Further Information ###
 

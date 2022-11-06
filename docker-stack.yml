@@ -26,6 +26,7 @@ services:
       - ./data/pki/issued/:/usr/local/certificates
     ports:
       - "80:80"
+      - "443:443"
     networks: 
       - out_net
       - wb_net
