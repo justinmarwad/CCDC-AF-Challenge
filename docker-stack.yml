@@ -76,7 +76,7 @@ volumes:
   db: 
   portainer:
 
-# If this is not a swarm part the networks need to be bridged. 
+
 networks: 
   # We want to create a network for the Web browsers to communicate with the database
   db_net: 
