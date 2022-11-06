@@ -283,7 +283,7 @@ backend be_http
     mode http
     server srv1 web:8000 
 ```
-This defines a ***backend*** be_http. This is used to communicate with teh backend servers the proxy should have access to. There can again be multiple backends defined as they have unique identifiers.
+This defines a ***backend*** be_http. This is used to communicate with the backend servers the proxy should have access to. There can again be multiple backends defined as they have unique identifiers.
 
 ***mode \<type\>*** defines the type of traffic the proxy will be listening to. **In this case** we will be using HTTP traffic.
 
@@ -303,10 +303,27 @@ backend be_http
 ```
 #### Part 5: Security Upgrade - TLS/SSL
 
-##### Creation of CA/Certificate 
-1. Use Self Signed for ease of pain?
+##### (A) Setup CA
 
-##### HAProxy
+1. Install easyrsa: ```sudo apt install easy-rsa -y```
+2. Init PKI structure: ``` /usr/share/easy-rsa/easyrsa init-pki```
+3. Build CA certificate w/o pass: ```/usr/share/easy-rsa/easyrsa build-ca nopass```
+   1. Common Name: ```ca.ccdc23af.cyber.uml.edu``` (or whatever you want to call it)
+
+##### (B) Create Keypair Request & Sign It 
+
+1. Create keypair request: ```/usr/share/easy-rsa/easyrsa gen-req ccdc23af.cyber.uml.edu nopass``` (this should normally be done in the client, but we do it here on the server to save time). 
+   1. Common Name: ```ccdc23af.cyber.uml.edu``` (or whatever you want to call it)
+
+2. Import request into server:```/usr/share/easy-rsa/easyrsa import-req /path/to/request.req ccdc23af.cyber.uml.edu```
+   
+3. Sign request: ```/usr/share/easy-rsa/easyrsa sign-req server ccdc23af.cyber.uml.edu```
+
+4. Bundle the .crt and .key files into a .pem file: ```cat pki/issued/ccdc23af.cyber.uml.edu.crt pki/private/haproxy.key > pki/issued/ccdc23af.cyber.uml.edu.pem```
+   
+   1. Detailed explanation: .crt is the signed digital certificate, but you also need to bundle the private key (.key) with this for the webserver you're running. 
+
+##### (D) Setup HAProxy  
 
 Edit Config file to be the following:
 ```
@@ -354,9 +371,15 @@ frontend fe_http
     use_backend be_http 
 
 backend be_http  
-    server srv1 web:8000 ssl verify none ## No SSL since server is http and internal?
+    server srv1 web:8000 ssl verify none ## No SSL since server is http and internal
 ```
-#### Part 6: Security Upgrade - ACL  
+
+##### (C) Setup Browser  
+
+1. Import CA certificate into browser. Cert located here: ```/usr/share/easy-rsa/pki/ca.crt```
+2. Navigate to https://ccdc23af.cyber.uml.edu. (You may need to add this to your hosts file if there is no external DNS entry for it.)
+
+#### Part 6: Security Upgrade - ACL - Admin Site Access  
 
 We would like to restrict access to the admin page of the website which is accessed through the (similar) following URL
 ```
@@ -401,31 +424,21 @@ backend be_http
     server srv1 web:8000 
 ```
 
+
+#### Part 7: Load Balancing With Swarm ####
+
+Run Docker Compose file with Swarm:
+
+1. Create a Docker Swarm: ```docker swarm init```
+2. Deploy the stack: ```docker stack deploy -c docker-stack.yml CCDC23_AF_Challenge```
+3. If you ever need to stop the stack: ```docker stack rm CCDC23_AF_Challenge```
+
+
+**Explanation:** HAproxy is routing its backend through "web:8000" and what happens is that swarm takes that web dns request and routes it round robin style to the web containers and completes our load balancing requirement. 
+
 #### Part X: Coffee Break ####
 
 Network Chuck would be proud.
-
-
-### TODO ### 
-
-1. Put haproxy and postgres on their own networks. Done!
-
-2. Visualizer 
-
-```
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "7001:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-    networks:
-      - back-end
-```
-
 
 
 
@@ -454,3 +467,16 @@ Network Chuck would be proud.
     * https://cbonte.github.io/haproxy-dconv/1.6/configuration.html#7.3.1-url_dec 
     * https://www.haproxy.com/blog/introduction-to-haproxy-acls/ 
 
+* EasyRSA
+  * https://easy-rsa.readthedocs.io/en/latest/ 
+
+
+### License ### 
+
+Copyright 2022 Justin Marwad, Matt Harper
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

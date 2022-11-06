@@ -14,10 +14,7 @@ services:
     restart: on-failure
 
   web:
-    # build: ./Django_Site
     image: sh0rtcyb3r/ccdc23_af_django:latest
-    #ports: # This is not needed as it does not need to be exposed, we currently have it as part of the internal network. 
-      #- "8000:8000"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -33,20 +30,36 @@ services:
     image: haproxy:latest
     volumes:
       - ./data/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro 
+      - ./data/pki/issued/:/usr/local/certificates
     ports:
       - "80:80"
-    depends_on:
-      - web
+      - "443:443"
+    # depends_on:
+    #   - web
     networks: 
       - db_net
       - wb_net
       - out_net
     restart: on-failure
-    # network_mode: host
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer:/data
+    ports:
+      - 9000:9000
 
 volumes: 
   db: 
+  portainer:
 
+  
 # If this is not a swarm part the networks need to be bridged. 
 networks: 
   # We want to create a network for the Web browsers to communicate with the database

@@ -15,7 +15,7 @@ services:
     deploy:
       placement:
         constraints:
-          - "node.role==manager" # do we need to label? or is this done automatically?
+          - "node.role==manager"  
       restart_policy:
         condition: on-failure
 
@@ -23,6 +23,7 @@ services:
     image: haproxy:latest
     volumes:
       - ./data/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro 
+      - ./data/pki/issued/:/usr/local/certificates
     ports:
       - "80:80"
     networks: 
@@ -40,9 +41,6 @@ services:
     
   web:
     image: sh0rtcyb3r/ccdc23_af_django:latest
-    # build: ./Django_Site
-    #ports:            # internal routing no need to map
-     # - "8000:8000"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -61,8 +59,22 @@ services:
       restart_policy:
         condition: on-failure
 
-volumes:
-  db:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer:/data
+    ports:
+      - 9000:9000
+
+volumes: 
+  db: 
+  portainer:
 
 # If this is not a swarm part the networks need to be bridged. 
 networks: 
