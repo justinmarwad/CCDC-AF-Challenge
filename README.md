@@ -106,9 +106,9 @@ This defines a service with the **name** web, this will provide a **DNS alias** 
 
 ***networks:*** This format is the same as described before. **In this case** the web service will be connected to the bd_net and wb_net networks.
 
-***depends_on:*** Tells docker compose that this service cannot be created unless the following services are already created and running. **In this case** the web service depends on the db (databse) service, this is because it needs to connect to the database and if it is unable to do so errors will occur. The depends_on tag has a format similar to the volumes Tag.
+***depends_on:*** Tells docker compose that this service cannot be created unless the following services are already created and running. **In this case** the web service depends on the db (database) service, this is because it needs to connect to the database and if it is unable to do so errors will occur. The depends_on tag has a format similar to the volumes Tag.
 
-***restart: \<condition\>*** tells docker to restart the service when a certian condtion happens, so in this case it will restart on failures
+***restart: \<condition\>*** tells docker to restart the service when a certain condition happens, so in this case it will restart on failures
 ```dockerfile
 # Not a part of the final code! 
 <tab> - <service>
@@ -137,7 +137,7 @@ This is a service defining the proxy container that will be used to implement fu
 
 ***volumes:** The format is the same as described before. **In this case** we are using a bind mount, where are a mapping a directory (or file in this case) to a location (or file) on the container. Changes made in either the host or container will affect each other in this case. Functionally this is no different from the **named** or **anonymous** volumes, just they are mapped to a known place in the filesystem.  
 
-***ports:** defines the port mapping of the host port to the container port, there can be zero or more of these mapping, but when this tag is used atleast one is expected. When mapping to he host machine, keep in mind that only one container can bind to a port at a time. Each container has its own network stack so each can have a service listening on 80, but only one can bind to the host's port 80 (unless swarm is used, as discussed lated). **In this case** we are mapping port 80 on the host to the port 80 on the container, which is what the HAProxy container will be listing on. The format following the Tag will be
+***ports:** defines the port mapping of the host port to the container port, there can be zero or more of these mapping, but when this tag is used at least one is expected. When mapping to he host machine, keep in mind that only one container can bind to a port at a time. Each container has its own network stack so each can have a service listening on 80, but only one can bind to the host's port 80 (unless swarm is used, as discussed lated). **In this case** we are mapping port 80 on the host to the port 80 on the container, which is what the HAProxy container will be listing on. The format following the Tag will be
 ```dockerfile
 # Not a part of the final code! 
 <tab> - "<HostPort#>:<ContainerPort#>"
@@ -352,9 +352,10 @@ frontend fe_http
 
 ```
 backend be_http  
-    server srv1 web:8000 ssl verify none
+    mode http
+    server srv1 web:8000 check
 ```
-***server srv1 web:8000 ssl verify none*** this line will redirect the traffic to the web containers **without** verifying the certificate **used with self signed certificates** we can specify ***ssl verify required ca-file \<PathToCA-File\>*** to add verification requirements. ([more](https://www.haproxy.com/documentation/hapee/latest/security/tls/))
+***server srv1 web:8000 check*** this line will redirect the traffic to the web containers **without** verifying the certificate and over http we can specify ***ssl verify required ca-file \<PathToCA-File\>*** to add verification requirements. ([more](https://www.haproxy.com/documentation/hapee/latest/security/tls/))
 
 ###### Final Config File - TLS/SSL
 ```
@@ -370,8 +371,9 @@ frontend fe_http
     
     use_backend be_http 
 
-backend be_http  
-    server srv1 web:8000 ssl verify none ## No SSL since server is http and internal
+backend be_http 
+    mode http 
+    server srv1 web:8000 check
 ```
 
 ##### (C) Setup Browser  
@@ -391,9 +393,13 @@ Edit configuration file as follows:
 ###### NEED TO EDIT TO MATCH TLS ONCE IMPLEMENTED AND TESTED
 ``` 
 frontend fe_http
+    mode http
     bind *:80
-    mode http 
-    acl restricted_page path_beg, url_dec -i /admin 
+    bind *:443 ssl crt /usr/local/certificates/ccdc23af.cyber.uml.edu.pem
+
+    http-request redirect scheme https unless { ssl_fc }
+    acl restricted_page path_beg, url_dec -i /admin
+
     use_backend be_http unless restricted_page
 ```
 ***acl restricted_page path_beg, url_dec -i /admin*** HAProxy creates a **named** access control list, they can also be **inline**. This one is named **path_beg** and it will evaluate to *true* or *false*. url_dec will take an encoded url, and decode it, this is used with the ACL to find all URLs that try accessing **/admin**. If the URL has **/admin** then the acl evaluates to *true* otherwise *false*
@@ -421,7 +427,7 @@ frontend fe_http
 
 backend be_http
     mode http
-    server srv1 web:8000 
+    server web web:8000 check 
 ```
 
 
@@ -442,8 +448,7 @@ Network Chuck would be proud.
 
 
 
-#### Redources
-##### Matt
+#### Resources
 * ACL
   * https://serverfault.com/questions/754752/block-specific-url-in-haproxy-url-encoding
   * https://www.haproxy.com/documentation/hapee/latest/configuration/acls/overview/
