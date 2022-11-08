@@ -2,6 +2,32 @@
 
 This repository contains the code for the CCDC AF Challenge. The challenge is to build a model of the Air Force and then complete specific tasks to provide resiliency and secure communications for the Air Force.
 
+### Table of Contents ###
+- [CCDC AF Challenge](#ccdc-af-challenge)
+    - [Table of Contents](#table-of-contents)
+    - [Getting Started](#getting-started)
+      - [Part 1: Install & Setup Docker](#part-1-install--setup-docker)
+      - [Part 2: Clone This Repository](#part-2-clone-this-repository)
+      - [Part 3: Docker Compose -- One System](#part-3-docker-compose----one-system)
+        - [Final docker-compose.yml](#final-docker-composeyml)
+      - [Part 4: HAProxy Basic Configuration](#part-4-haproxy-basic-configuration)
+        - [Configuration File](#configuration-file)
+      - [Part 5: Security Upgrade - TLS/SSL](#part-5-security-upgrade---tlsssl)
+        - [(A) Setup CA](#a-setup-ca)
+        - [(B) Create Keypair Request & Sign It](#b-create-keypair-request--sign-it)
+        - [(D) Setup HAProxy](#d-setup-haproxy)
+          - [Final Config File - TLS/SSL](#final-config-file---tlsssl)
+        - [(C) Setup Browser](#c-setup-browser)
+      - [Part 6: Security Upgrade - ACL - Admin Site Access](#part-6-security-upgrade---acl---admin-site-access)
+          - [NEED TO EDIT TO MATCH TLS ONCE IMPLEMENTED AND TESTED](#need-to-edit-to-match-tls-once-implemented-and-tested)
+        - [Final Config File - ACL](#final-config-file---acl)
+      - [Part 7: Creation of Stack](#part-7-creation-of-stack)
+        - [Final docker-stack.yml](#final-docker-stackyml)
+      - [Part 8: Load Balancing With Swarm](#part-8-load-balancing-with-swarm)
+      - [Part X: Coffee Break](#part-x-coffee-break)
+      - [Resources](#resources)
+    - [License](#license)
+
 ### Getting Started ### 
 
 #### Part 1: Install & Setup Docker ###
